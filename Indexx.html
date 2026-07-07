@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chronos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Stylee.css" />
+</head>
+<body>
+
+  <!-- ===================== Aurora background layers ===================== -->
+  <div class="sky" id="sky" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="aurora-layer layer-1"></div>
+    <div class="aurora-layer layer-2"></div>
+    <div class="aurora-layer layer-3"></div>
+    <div class="glow-blob blob-violet"></div>
+    <div class="glow-blob blob-cyan"></div>
+    <div class="glow-blob blob-emerald"></div>
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <!-- ===================== App ===================== -->
+  <main class="app">
+
+    <header class="app-header">
+      <span class="eyebrow">Timing Experience</span>
+      <h1 class="brand">STOP WATCH</h1>
+      <p class="subtitle">A calm sky. A precise moment.</p>
+    </header>
+
+    <!-- ===================== Circular Stopwatch ===================== -->
+    <section class="watch-wrap" id="watchWrap">
+
+      <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+
+      <svg class="watch-ring" viewBox="0 0 300 300" aria-hidden="true">
+        <defs>
+          <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7C6CFF"/>
+            <stop offset="50%" stop-color="#4DE8E8"/>
+            <stop offset="100%" stop-color="#3ED9A0"/>
+          </linearGradient>
+          <filter id="ringGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <circle class="ring-track" cx="150" cy="150" r="132"></circle>
+        <circle class="ring-progress" id="ringProgress" cx="150" cy="150" r="132"></circle>
+      </svg>
+
+      <!-- moving marker that travels along the ring -->
+      <div class="ring-marker-orbit" id="ringMarkerOrbit" aria-hidden="true">
+        <span class="ring-marker"></span>
+      </div>
+
+      <div class="glass-face" id="glassFace">
+        <div class="status-row">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-label" id="statusLabel">Ready</span>
+        </div>
+
+        <div class="display" id="display" aria-live="polite" aria-atomic="true">
+          <div class="display-row">
+            <span class="digit-group" id="hh">00</span>
+            <span class="colon">:</span>
+            <span class="digit-group" id="mm">00</span>
+            <span class="colon">:</span>
+            <span class="digit-group" id="ss">00</span>
+          </div>
+          <div class="display-row ms-row">
+            <span class="colon-ms">:</span>
+            <span class="digit-group ms" id="ms">00</span>
+            <span class="ms-unit">ms</span>
+          </div>
+        </div>
+
+        <div class="display-caption">HH &nbsp;·&nbsp; MM &nbsp;·&nbsp; SS &nbsp;·&nbsp; MS</div>
+      </div>
+    </section>
+
+    <!-- ===================== Controls ===================== -->
+    <section class="controls" role="group" aria-label="Stopwatch controls">
+      <button class="capsule capsule-ghost" id="resetBtn" aria-label="Reset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        <span>Reset</span>
+      </button>
+
+      <button class="capsule capsule-primary" id="startPauseBtn" aria-label="Start">
+        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        <span class="btn-label">Start</span>
+      </button>
+
+      <button class="capsule capsule-ghost" id="lapBtn" aria-label="Lap" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V4l14 8-14 8z" transform="translate(2 -1)"/></svg>
+        <span>Lap</span>
+      </button>
+    </section>
+
+    <p class="kbd-hints">
+      <span><kbd>Space</kbd> Start / Pause</span>
+      <span><kbd>L</kbd> Lap</span>
+      <span><kbd>R</kbd> Reset</span>
+    </p>
+
+    <!-- ===================== Stats ===================== -->
+    <section class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <span class="stat-label">Total Time</span>
+        <span class="stat-value" id="statTotal">00:00:00.00</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Laps</span>
+        <span class="stat-value" id="statLaps">0</span>
+      </div>
+      <div class="stat-card fastest">
+        <span class="stat-label">Fastest Lap</span>
+        <span class="stat-value" id="statFastest">—</span>
+      </div>
+      <div class="stat-card slowest">
+        <span class="stat-label">Slowest Lap</span>
+        <span class="stat-value" id="statSlowest">—</span>
+      </div>
+      <div class="stat-card average">
+        <span class="stat-label">Average Lap</span>
+        <span class="stat-value" id="statAverage">—</span>
+      </div>
+    </section>
+
+    <!-- ===================== Lap Timeline ===================== -->
+    <section class="timeline-section">
+      <div class="timeline-header">
+        <h2>Lap Timeline</h2>
+        <span class="timeline-count" id="lapsCount">0 laps</span>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="timeline-empty" id="timelineEmpty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <p>No laps yet. Start the stopwatch and press <strong>Lap</strong> to mark a moment.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>SkillCraft Technology · Task 02 — Aurora Night Sky Edition</p>
+    </footer>
+
+  </main>
+
+<script src="Scriptt.js"></script>
+</body>
+</html>
