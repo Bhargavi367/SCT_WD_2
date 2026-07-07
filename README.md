@@ -57,8 +57,6 @@ Stopwatch/
 ├── index.html
 ├── style.css
 ├── script.js
-├── assets/
-│   └── images/
 └── README.md
 ```
 
@@ -95,7 +93,7 @@ Create an interactive and user-friendly Stopwatch Web Application that includes:
 
 ---
 
-## 👩‍💻 Author
+##  Author
 
 -Bhargavi
 
@@ -105,6 +103,3 @@ Web Development Intern @ SkillCraft Technology
 
 ---
 
-## ⭐ Support
-
-If you like this project, don't forget to ⭐ the repository.
